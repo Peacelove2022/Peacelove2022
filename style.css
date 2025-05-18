@@ -1,0 +1,25 @@
+body {    
+    background-color: #00ff00;
+    color: #0000ff;
+    font-family: Times New Roman, sans-serif;
+
+}
+h1 {
+    color: #ff0000;
+    font-size: 2em;
+    text-align: center;
+}
+p {
+    font-size: 1,2em;
+
+}
+ul {
+    list-style-type: square;
+ }
+ a {
+    color: #ffff00;
+    text-decoration: none;
+}
+a:hover {
+text-decoration: underline;
+}
