@@ -1,58 +1,81 @@
-<DOCYTYPE html>
-<html>
-<head>
-<link rel="stylesheet" href="style.css">
-<title>min lille drøm</title>
-</head>
 <body>
-<h1>UWU</h1>
+  <h1>UWU</h1>
+  <p>IT'S THE SHIT THAT IS STYLED 90s</p>
 
-<p>IT'S THE SHIT THAT IS STYLED 90s</p>
- 
-<img src="images/photo_2025-01-15_12-57-32.jpg" alt="here should be a photo">
+  <img src="images/photo_2025-01-15_12-57-32.jpg" alt="here should be a photo">
 
-<ul>
+  <div class="chat-container">
+    <div class ="chat-header">
+     CHAT ROOM #1
+    </div>
+    <div class="chat-messages">
+      </div>
+    <div class="chat-input">
+      <input type="text" id="message-input" placeholder="YOUR MESSAGE">
+      <button id="send-button">SEND</button>
+      </div>
+  </div>
 
-  <li><a href="https://images.genius.com/dc4ccd9bc4923b1f9074cfb5f44d5d46.1000x1000x1.png">Link 1</a></li>
-<li><a href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQ4HA4MYNtxQR4uAhee4J0RMeeCsIaBgY30Q&s">Link 2</a></li>
-<ul>
+  <script type="module">
+    // Комментарий к блоку импортов
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.3/firebase-app.js";
+    import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/11.7.3/firebase-firestore.js";
+    // import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.7.3/firebase-analytics.js";
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/pOTkCgkxqyg?si=gToMnVRXZLg6hARg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
- 
-<div class="chat-container">
-  <div class ="chat-header">
-   CHAT ROOM #1
-</div>
-<div class="chat-messages">
-</div>
-<div class="chat-input">
-<input type="text" id="message-input" placeholder="YOUR MESSAGE">
-<button id="send-button">SEND</button>
-</div>
-</div>
+    // Конфигурация Firebase
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "chat90s-105a4.firebaseapp.com",
+      projectId: "chat90s-105a4",
+      storageBucket: "chat90s-105a4.firebasestorage.app",
+      messagingSenderId: "371325509999",
+      appId: "1:371325509999:web:0a9ce9e63d74d08deac89a",
+      measurementId: "G-W2Z8836SG2" // Комментарий к отдельной строке
+    };
 
-<script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.3/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.7.3/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
+    // Инициализация Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const messagesRef = collection(db, 'messages');
+    // const analytics = getAnalytics(app);
 
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyDLWVTqT4mStqCwiQ--Xhyq8QBvauep6bc",
-    authDomain: "chat90s-105a4.firebaseapp.com",
-    projectId: "chat90s-105a4",
-    storageBucket: "chat90s-105a4.firebasestorage.app",
-    messagingSenderId: "371325509999",
-    appId: "1:371325509999:web:0a9ce9e63d74d08deac89a",
-    measurementId: "G-W2Z8836SG2"
-  };
+    const messagesContainer = document.querySelector('.chat-messages');
+    const messageInput = document.querySelector('#message-input');
+    const sendButton = document.querySelector('#send-button');
+    const nickname = 'user of 90s'; // Комментарий с никнеймом
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-</script>
+    // Функция для отображения сообщений
+    const displayMessages = (snapshot) => {
+      messagesContainer.innerHTML = '';
+      snapshot.forEach((doc) => {
+        const messageData = doc.data();
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('message');
+        messageElement.innerHTML = <span class="nickname">${messageData.nickname}:</span> ${messageData.text};
+        messagesContainer.appendChild(messageElement);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      });
+    };
+
+    // Слушаем новые сообщения
+    const q = query(messagesRef, orderBy('timestamp'));
+    onSnapshot(q, displayMessages);
+
+    // Обработчик отправки сообщения
+    sendButton.addEventListener('click', () => {
+      const text = messageInput.value.trim();
+      if (text) {
+        addDoc(messagesRef, {
+          nickname: nickname,
+          text: text,
+          timestamp: serverTimestamp()
+        }).then(() => {
+          messageInput.value = '';
+        }).catch((error) => {
+          console.error("error while sending the message: ", error);
+        });
+      }
+    });
+  </script>
 </body>
 </html>
