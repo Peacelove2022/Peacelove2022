@@ -30,66 +30,15 @@
       </div>
   </div>
 
-  <script type="module">
-    // Комментарий к блоку импортов
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.3/firebase-app.js";
-    import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/11.7.3/firebase-firestore.js";
-    // import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.7.3/firebase-analytics.js";
-
-    // Конфигурация Firebase
-    const firebaseConfig = {
-      apiKey: "AIzaSyDLWVTqT4mStqCwiQ--Xhyq8QBvauep6bc",
-    authDomain: "chat90s-105a4.firebaseapp.com",
-    projectId: "chat90s-105a4",
-    storageBucket: "chat90s-105a4.firebasestorage.app",
-    messagingSenderId: "371325509999",
-    appId: "1:371325509999:web:0a9ce9e63d74d08deac89a",
-    measurementId: "G-W2Z8836SG2"
-    };
-
-    // Инициализация Firebase
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const messagesRef = collection(db, 'messages');
-    // const analytics = getAnalytics(app);
-
-    const messagesContainer = document.querySelector('.chat-messages');
-    const messageInput = document.querySelector('#message-input');
-    const sendButton = document.querySelector('#send-button');
-    const nickname = 'user of 90s'; // Комментарий с никнеймом
-
-    // Функция для отображения сообщений
-    const displayMessages = (snapshot) => {
-      messagesContainer.innerHTML = '';
-      snapshot.forEach((doc) => {
-        const messageData = doc.data();
-        const messageElement = document.createElement('div');
-        messageElement.classList.add('message');
-        messageElement.innerHTML = <span class="nickname">${messageData.nickname}:</span> ${messageData.text};
-        messagesContainer.appendChild(messageElement);
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
-      });
-    };
-
-    // Слушаем новые сообщения
-    const q = query(messagesRef, orderBy('timestamp'));
-    onSnapshot(q, displayMessages);
-
-    // Обработчик отправки сообщения
-    sendButton.addEventListener('click', () => {
-      const text = messageInput.value.trim();
-      if (text) {
-        addDoc(messagesRef, {
-          nickname: nickname,
-          text: text,
-          timestamp: serverTimestamp()
-        }).then(() => {
-          messageInput.value = '';
-        }).catch((error) => {
-          console.error("error while sending the message: ", error);
-        });
-      }
-    });
-  </script>
+  const firebaseConfig = {
+  apiKey: "AIzaSyDLWVTqT4mStqCwiQ--Xhyq8QBvauep6bc",
+  authDomain: "chat90s-105a4.firebaseapp.com",
+  projectId: "chat90s-105a4",
+  storageBucket: "chat90s-105a4.firebasestorage.app",
+  messagingSenderId: "371325509999",
+  appId: "1:371325509999:web:0a9ce9e63d74d08deac89a",
+  measurementId: "G-W2Z8836SG2"
+};
+ 
 </body>
 </html>
